@@ -1,8 +1,8 @@
 import random
 import re
 import string
-
 def generate_random_list(length):
+
     """Generate a list of random numbers of a given length
      Examples: generate_random_list(5)
      Output: [81, 96, 77, 64, 49]
@@ -10,12 +10,12 @@ def generate_random_list(length):
     """
     return [random.randint(0, 100) for number in range(length)]
 
+
 def find_max(numbers):
     """Find the maximum number in a list of numbers
      Examples: find_max(5)
      Output: 96
     """
-    
     return max(numbers)
 
 
@@ -24,17 +24,15 @@ def find_min(numbers):
     Examples: find_min([1, 2, 3, 4, 5])
      Output: 1
     """
-    
     return min(numbers)
-
+    
 
 def find_average(numbers):
     """Find the average of a list of numbers
     Examples: find_average([1, 2, 3, 4, 5])
      Output: 3.0
     """
-    
-    return sum(numbers) / len(numbers)
+    return (sum(numbers) / len(numbers))
  
 
 def find_number_of_even_numbers(numbers):
@@ -42,14 +40,24 @@ def find_number_of_even_numbers(numbers):
     Examples: find_number_of_even_numbers([1, 2, 3, 4, 5])
      Output: 2
     """
-    return len([num for num in numbers if num % 2 == 0 ])
+    even_num = 0
+    for num in numbers:
+        if num % 2 == 0:
+            even_num += 1
+    return even_num
+print(find_number_of_even_numbers([1, 2, 3, 4, 5]))
 
 def find_number_of_odd_numbers(numbers):
     """Find the number of odd numbers in a list of numbers
     Examples: find_number_of_odd_numbers([1, 2, 3, 4, 5])
      Output: 3
     """
-    return len([num for num in numbers if num % 2 != 0 ])
+    odd_num = 0
+    for num in numbers:
+        if num % 2 != 0:
+            odd_num += 1
+    return odd_num
+
 
 
 def find_even_numbers(numbers):
@@ -57,9 +65,11 @@ def find_even_numbers(numbers):
     Examples: find_even_numbers([1, 2, 3, 4, 5])
      Output: (2, 4)
     """
-    num = [num for num in numbers if num % 2 == 0 ]
-    return tuple(num)
-
+    even_list = []
+    for num in numbers:
+        if num % 2 == 0:
+            even_list.append(num)
+    return even_list
 
             
 def find_odd_numbers(numbers):
@@ -67,30 +77,58 @@ def find_odd_numbers(numbers):
     Examples: find_odd_numbers([1, 2, 3, 4, 5])
      Output: (1, 3, 5)
     """
-    num = [num for num in numbers if num % 2 != 0 ]
-    return tuple(num)
-
+    odd_list = []
+    for num in numbers:
+        if num % 2 != 0:
+            odd_list.append(num)
+    return odd_list
 
 
 def return_list_stats(the_list):
     """Return a dictionary containing the max, min, mean, and average of a list of numbers
     Examples: return_list_stats([1, 2, 3, 4, 5])
      Output: {  "unique_numbers": {1, 2, 3, 4, 5},
-                "min": 1, "max": 5, "average": 3.0,
+                "min": 1,
+                "max": 5,
+                "average": 3.0,
                 "even_numbers": (2, 4),
                 "odd_numbers": (1, 3, 5),
                 "number_of_even_numbers": 2,
                 "number_of_odd_numbers": 3
             }
     """
+    if not the_list:
+        stats_dict = {
+            'unique_numbers': set(),
+            'min': None,
+            'max': None,
+            'average': 0,
+            'even_numbers': (),
+            'odd_numbers': (),
+            'number_of_even_numbers': 0,
+            'number_of_odd_numbers': 0,
+        }
 
-    return {"unique_numbers": {num for i,num in enumerate(the_list)}, 
-            "min": min(the_list), 
-            "max": max(the_list),  
-            "average": round((sum(the_list) / len(the_list)) ,1), 
-            "even_numbers": find_even_numbers(the_list), 
-            "odd_numbers": find_odd_numbers(the_list), 
-            "number_of_even_numbers": find_number_of_even_numbers(the_list), "number_of_odd_numbers": find_number_of_odd_numbers(the_list) }
+    unique_numbers = set(the_list)
+    min_num = min(the_list)
+    max_num = max(the_list)
+    average = sum(the_list) / len(the_list) if the_list else 0
+    even_numbers = tuple(num for num in the_list if num % 2 == 0)
+    odd_numbers = tuple(num for num in the_list if num % 2 != 0)
+    number_of_even_numbers = len(even_numbers)
+    number_of_odd_numbers = len(odd_numbers)
+
+    stats_dict = {
+        'unique_numbers': unique_numbers,
+        'min': min_num,
+        'max': max_num,
+        'average': average,
+        'even_numbers': even_numbers,
+        'odd_numbers': odd_numbers,
+        'number_of_even_numbers': number_of_even_numbers,
+        'number_of_odd_numbers': number_of_odd_numbers,
+    }
+    return stats_dict
 
 def process_characters(input_list):
     """
@@ -106,17 +144,6 @@ def process_characters(input_list):
     >>> process_characters(['a', '1', 'b', '3', 'c', '@', '5', 'd', 'e'])
     Output: ['a', 'b', 'c', 'd', 'e'], [1, 3, 5]
     """
-    letters = []
-    numbers = []
-    for letter in input_list:
-        if letter in string.ascii_lowercase and letter not in letters:
-                letters.append(letter)
-            
-    for num in input_list:
-        if num.isnumeric() and int(num) not in numbers:
-                numbers.append(int(num))
-
-    return  sorted(letters), sorted(numbers)
 
 def generate_squared_dict(n):
     """
@@ -135,10 +162,6 @@ def generate_squared_dict(n):
         >>> generate_squared_dict(5)
         Output: {1: 1, 2: 4, 3: 9, 4: 16, 5: 25}
     """
-    if n > 0:
-        return {num: num*num  for num in  range(1, n + 1)}
-    else:
-        return {num: num*num  for num in  range(n, 0)}
 
 
 def convert_to_word_list(text):
@@ -152,7 +175,6 @@ def convert_to_word_list(text):
         'his', 'name', 'is', 'death', 'and', 'there', 'is', 'only', 
         'one', 'thing', 'we', 'say', 'to', 'death', 'not', 'today']
     """
-    return "".join( [word.strip(",:!'").lower()  for word in text] ).split()
 
 
 def letters_count_map(text):
@@ -165,7 +187,6 @@ def letters_count_map(text):
     Output: {'a': 8, 'b': 0, 'c': 0, 'd': 5, 'e': 11, 'f': 1, 'g': 1, 'h': 6, 'i': 5, 'j': 0, 'k': 0, 'l': 2, 'm': 1,
              'n': 9, 'o': 8, 'p': 0, 'q': 0, 'r': 3, 's': 5, 't': 9, 'u': 0, 'v': 0, 'w': 1, 'x': 0, 'y': 4, 'z': 0}
     """
-    return {letter: (text.lower()).count(letter) for letter in string.ascii_lowercase }
 
 
 def text_to_morse(text):
@@ -206,4 +227,3 @@ def text_to_morse(text):
         ',': '--..--', ':': '---...', "'": '.----.', '.': '.-.-.-', '!': '-.-.--', '?': '..--..', ' ': ' '
     }
     
-    return " ".join([morse_code_dict[i.upper()]  for i in  text]) 
